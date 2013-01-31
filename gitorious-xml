@@ -1,0 +1,33 @@
+#!/usr/bin/python
+
+# Author: Nicolas Dechesne
+#  Gitorious has some 'API' to retrieve project information
+#  http://gitorious.org/gitorious/pages/Api
+#  e.g. http://gitorious.org/<project>.xml or
+#       http://gitorious.org/<project>/<repo>.xml
+# for now, this script only list all the repositories clone urls
+
+import urllib2
+import xml.etree.ElementTree as ET
+import sys
+
+
+def usage():
+    print 'gitorious-xml -u <url>'    
+    sys.exit(2)
+    
+def main(argv):
+
+    if (len(argv) == 1):
+        url = argv[0]
+    else:
+        usage()
+
+    xml = urllib2.urlopen(url).read()
+    root = ET.fromstring(xml)
+    for elem in root.findall('repositories/mainlines/repository/clone_url'):
+        print elem.text
+
+if __name__ == "__main__":
+   main(sys.argv[1:])
+
