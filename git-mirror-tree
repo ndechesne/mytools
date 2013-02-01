@@ -1,0 +1,15 @@
+#!/bin/bash
+
+tree=$1
+name=`basename $tree`
+GIT='git'
+
+if [ -d $name ] ; then
+   echo Updating $name...
+   (cd $name && $GIT fetch)
+else
+   echo Cloning $tree...
+   $GIT clone --mirror $tree
+fi
+
+
